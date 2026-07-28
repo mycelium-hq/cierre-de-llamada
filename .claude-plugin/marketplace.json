@@ -11,7 +11,7 @@
       "name": "cierre-de-llamada",
       "source": "./",
       "description": "Convierte la transcripcion de una llamada comercial en el seguimiento completo: CRM, tareas, correo, recordatorio, aviso al lider y coaching.",
-      "version": "1.0.3"
+      "version": "1.0.4"
     }
   ]
 }

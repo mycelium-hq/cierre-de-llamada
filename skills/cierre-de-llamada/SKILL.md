@@ -54,6 +54,18 @@ Los 7, siempre, en este orden:
 6. **AVISO AL LÍDER COMERCIAL**: un párrafo, lo que el jefe necesita saber sin escuchar la llamada.
 7. **QUÉ FUNCIONÓ / QUÉ NO**: dos listas cortas. Esto es lo que después entrena al resto del equipo.
 
+### El bloque 3 va en casillas, nunca en tabla
+
+Esta regla vive aquí y no solo en el archivo de formato, porque es la que más se rompe.
+
+```
+- [ ] <acción> | <dueño> | <fecha> <hora>
+```
+
+Una línea por tarea, empezando con `- [ ]`. **Prohibida la tabla markdown** (`| Dueño | Tarea |`). Se ve ordenada y no sirve: el punto del bloque es que se pegue en cualquier app de tareas y quede marcable. Una tabla no se marca.
+
+Si estás por escribir un `|---|` en el bloque 3, párate y usa casillas.
+
 ## Paso 4. Guardar
 
 Escribe todo en `seguimientos/YYYY-MM-DD-<cliente>.md`.
