@@ -58,10 +58,12 @@ Los 7, siempre, en este orden:
 
 Escribe todo en `seguimientos/YYYY-MM-DD-<cliente>.md`.
 
-- Crea la carpeta si no existe.
+- Crea la carpeta si no existe. La primera vez Claude Code va a pedir permiso para escribir. Es normal, es una sola vez.
 - `<cliente>` en minúsculas, sin espacios ni tildes (`banco-del-norte`).
 - Si el archivo ya existe, agrega al final bajo `## Segunda llamada` en vez de sobreescribir.
 - Al terminar, di la ruta exacta del archivo.
+
+Nombres de archivo que funcionan igual en Windows, Mac y Linux. Del nombre del cliente quita siempre: acentos, ñ, espacios, y los caracteres `\ / : * ? " < > |`. Reemplázalos por guión. Nunca uses rutas absolutas ni `~`: siempre `seguimientos/` relativo a la carpeta donde está trabajando el usuario.
 
 `seguimientos/` está en `.gitignore`. Las conversaciones con tus clientes se quedan en tu máquina.
 

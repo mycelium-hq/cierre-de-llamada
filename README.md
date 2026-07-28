@@ -48,6 +48,8 @@ Listo. Ahora, después de cualquier llamada:
 
 Y pega la transcripción cuando te la pida.
 
+**La primera vez te va a pedir permiso** para crear la carpeta donde guarda los seguimientos. Dale que sí. Es una sola vez, y es la señal de que está guardando en tu máquina y no en otro lado.
+
 ¿No tienes Claude Code? Se instala en [claude.com/code](https://claude.com/code). Si hoy no te alcanza, usa la ruta de arriba y vuelve a esta cuando quieras.
 
 ---
@@ -78,9 +80,11 @@ Esto es la puerta. Úsala primero.
 
 ## Requisitos
 
-Ninguno para la ruta sin instalar.
+**Windows, Mac y Linux.** Funciona igual en los tres.
 
-Para la ruta instalada: [Claude Code](https://claude.com/code).
+Aquí no hay scripts que instalar ni terminal que abrir. Los dos comandos de arriba se escriben dentro de Claude Code, que es la misma ventana en cualquier sistema. En Windows no necesitas WSL, ni Git Bash, ni PowerShell como administrador.
+
+Para la ruta sin instalar (la de [EMPIEZA-AQUI.md](EMPIEZA-AQUI.md)) solo necesitas un navegador, así que también sirve desde el celular.
 
 No necesitas saber programar. No necesitas saber qué es un repositorio. No hay que configurar nada.
 
