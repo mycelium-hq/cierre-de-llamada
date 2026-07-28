@@ -58,9 +58,11 @@ Y pega la transcripción cuando te la pida.
 
 Cada llamada procesada se guarda en `seguimientos/` dentro de tu carpeta, en tu computador.
 
-Esa carpeta está en `.gitignore`. No se sube a ningún lado. Nosotros no la vemos, no viaja a ningún servidor nuestro, y si borras la carpeta desaparece.
+Esa carpeta está en `.gitignore`. No se sube a git, nosotros no la vemos, y este repo no tiene telemetría de ningún tipo: no hay código que pueda reportar nada a Mycelium.
 
-Lo que hables con tus clientes es tuyo.
+Con una precisión que importa: **Claude Code sí manda tu transcripción a los modelos de Anthropic para procesarla.** Así funciona cualquier herramienta con Claude, con este repo o sin él. Lo que no pasa es que tus llamadas lleguen a nosotros.
+
+El detalle completo está en [SECURITY.md](SECURITY.md). Vale la pena leerlo antes de meter llamadas de clientes.
 
 ---
 

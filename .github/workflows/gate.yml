@@ -1,0 +1,108 @@
+name: gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly: catches rot in a repo that ships rarely but must always install.
+    - cron: "17 9 * * 1"
+
+# Read-only. A fork PR can run this gate and still change nothing.
+permissions:
+  contents: read
+
+jobs:
+  # Real Windows + Linux checkout. For a markdown-only repo the genuine
+  # cross-platform risk is a filename git cannot check out on Windows, so a
+  # Windows runner that successfully checks out IS the proof. macOS is omitted
+  # deliberately: it costs ~5x a Linux minute and proves nothing Linux does not.
+  checkout-matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every shipped file is present after checkout
+        shell: bash
+        env:
+          RUNNER_OS_NAME: ${{ matrix.os }}
+        run: |
+          set -euo pipefail
+          for f in README.md EMPIEZA-AQUI.md LICENSE SECURITY.md \
+                   .claude-plugin/plugin.json .claude-plugin/marketplace.json \
+                   skills/cierre-de-llamada/SKILL.md \
+                   skills/cierre-de-llamada/references/formato.md \
+                   commands/cierre.md; do
+            [ -f "$f" ] || { echo "MISSING after checkout on $RUNNER_OS_NAME: $f"; exit 1; }
+          done
+          echo "all files checked out on $RUNNER_OS_NAME"
+
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Manifests are valid JSON and versions agree
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          p = json.load(open(".claude-plugin/plugin.json"))
+          m = json.load(open(".claude-plugin/marketplace.json"))
+          entries = [x for x in m["plugins"] if x["name"] == p["name"]]
+          if not entries:
+              sys.exit(f"marketplace.json has no entry named {p['name']!r}")
+          if entries[0]["version"] != p["version"]:
+              sys.exit(f"version drift: plugin.json {p['version']} != marketplace.json {entries[0]['version']}")
+          print(f"manifests OK, both at {p['version']}")
+          PY
+
+      - name: Plugin structure the installer actually needs
+        run: |
+          set -euo pipefail
+          test -f skills/cierre-de-llamada/SKILL.md
+          grep -q '^name: cierre-de-llamada$' skills/cierre-de-llamada/SKILL.md
+          grep -q '^description:' skills/cierre-de-llamada/SKILL.md
+          echo "skill frontmatter OK"
+
+      - name: Personal-data scrub (public repo, non-negotiable)
+        run: |
+          set -uo pipefail
+          PAT='\bAdelaida\b|\bDiaz-Roa\b|\bOnde\b|\bSergio\b|\bSneider\b|\bPanorama\b|\bNelly\b|\bColombia\b|\bBogot[aá]\b|\bAccenture\b|adelaida@|adelaidadiaz-roa'
+          if grep -rnE "$PAT" . --exclude-dir=.git --exclude-dir=.github; then
+            echo "::error::personal data in a public repo"; exit 1
+          fi
+          echo "scrub clean"
+
+      - name: Secret scan
+        run: |
+          set -uo pipefail
+          KEYS='AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]{36}|github_pat_[A-Za-z0-9_]{22,255}|sk_live_[0-9a-zA-Z]{24,}|sk-ant-[A-Za-z0-9_-]{40,}'
+          if grep -rnE "$KEYS" . --exclude-dir=.git --exclude-dir=.github; then
+            echo "::error::credential in repo"; exit 1
+          fi
+          echo "no secrets"
+
+      - name: Voice firewall (external prose ships without em dashes)
+        run: |
+          set -uo pipefail
+          if grep -rn '—' --include='*.md' . ; then
+            echo "::error::em dash in customer-facing prose"; exit 1
+          fi
+          echo "voice OK"
+
+      - name: Portability (no scripts, no absolute paths, no Windows-illegal names)
+        run: |
+          set -uo pipefail
+          if find . -path ./.git -prune -o \( -name '*.sh' -o -name '*.ps1' -o -name '*.bat' \) -print | grep .; then
+            echo "::error::a script means this repo is no longer portable by construction"; exit 1
+          fi
+          if grep -rnE '(^|[^a-zA-Z0-9])(~/|/Users/|/home/)' --include='*.md' --include='*.json' .; then
+            echo "::error::absolute path in a doc a Windows user will follow"; exit 1
+          fi
+          if find . -path ./.git -prune -o -print | grep -E '[:*?"<>|]'; then
+            echo "::error::filename git cannot check out on Windows"; exit 1
+          fi
+          echo "portable"
