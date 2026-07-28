@@ -1,0 +1,11 @@
+# Tus llamadas y tus seguimientos se quedan en tu maquina. Nunca se suben.
+seguimientos/
+transcripciones/
+
+# Archivos sueltos de transcripcion en la raiz
+*.vtt
+*.srt
+*.transcript.txt
+
+.DS_Store
+Thumbs.db

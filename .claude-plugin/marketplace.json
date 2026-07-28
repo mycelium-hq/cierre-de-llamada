@@ -1,0 +1,16 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "cierre-de-llamada",
+  "owner": {
+    "name": "Mycelium AI",
+    "url": "https://github.com/mycelium-hq"
+  },
+  "plugins": [
+    {
+      "name": "cierre-de-llamada",
+      "source": "./",
+      "description": "Convierte la transcripcion de una llamada comercial en el seguimiento completo: CRM, tareas, correo, recordatorio, aviso al lider y coaching.",
+      "version": "1.0.0"
+    }
+  ]
+}
