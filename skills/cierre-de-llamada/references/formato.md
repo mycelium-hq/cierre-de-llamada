@@ -38,6 +38,8 @@ Una línea por tarea. Sin tareas inventadas: solo lo que alguien se comprometió
 - [ ] <acción> | <dueño> | <fecha> <hora>
 ```
 
+**Casilla de markdown, nunca una tabla.** El punto es que se pueda pegar en cualquier app de tareas y quede marcable. Una tabla se ve bien y no sirve para nada.
+
 Sin fecha en la transcripción → `[FALTA: acordar fecha]`. No pongas una fecha "razonable".
 
 ## 4. CORREO DE SEGUIMIENTO
