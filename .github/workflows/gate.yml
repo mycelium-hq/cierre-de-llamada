@@ -12,6 +12,12 @@ on:
 permissions:
   contents: read
 
+# Patterns live here ONCE so the self-test below and the real checks provably
+# use the SAME string. A control that tests a copy of the pattern proves nothing.
+env:
+  SCRUB_PAT: '\bAdelaida\b|\bDiaz-Roa\b|\bOnde\b|\bSergio\b|\bSneider\b|\bPanorama\b|\bNelly\b|\bColombia\b|\bBogot[aá]\b|\bAccenture\b|adelaida@|adelaidadiaz-roa'
+  KEYS_PAT: 'AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]{36}|github_pat_[A-Za-z0-9_]{22,255}|sk_live_[0-9a-zA-Z]{24,}|sk-ant-[A-Za-z0-9_-]{40,}'
+
 jobs:
   # Real Windows + Linux checkout. For a markdown-only repo the genuine
   # cross-platform risk is a filename git cannot check out on Windows, so a
@@ -24,7 +30,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Every shipped file is present after checkout
         shell: bash
         env:
@@ -43,7 +49,30 @@ jobs:
   gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # POSITIVE CONTROL. Every check below is a grep whose "clean" result is
+      # "no match" — which is also what a BROKEN grep returns. Without this step
+      # the gate can go green because it stopped working. Prove each pattern
+      # still fires on a known-bad string before trusting any clean result.
+      - name: Self-test the gate before trusting it
+        run: |
+          set -uo pipefail
+          fail=0
+          probe() {  # name, pattern, known-bad string
+            if printf '%s\n' "$3" | grep -qE "$2"; then
+              echo "control OK   : $1 fires on known-bad input"
+            else
+              echo "::error::control DEAD: $1 no longer matches its own known-bad input. The gate is broken, not clean."
+              fail=1
+            fi
+          }
+          probe "personal-data scrub" "$SCRUB_PAT" "contacto: Adelaida"
+          # Built at runtime so no credential-shaped literal is ever committed.
+          probe "secret scan" "$KEYS_PAT" "AKIA$(printf 'ABCDEFGHIJKLMNOP')"
+          probe "voice firewall" '—' "texto con em dash — aqui"
+          probe "windows-illegal filename" '[:*?"<>|]' 'archivo:malo.md'
+          exit $fail
 
       - name: Manifests are valid JSON and versions agree
         run: |
@@ -70,8 +99,7 @@ jobs:
       - name: Personal-data scrub (public repo, non-negotiable)
         run: |
           set -uo pipefail
-          PAT='\bAdelaida\b|\bDiaz-Roa\b|\bOnde\b|\bSergio\b|\bSneider\b|\bPanorama\b|\bNelly\b|\bColombia\b|\bBogot[aá]\b|\bAccenture\b|adelaida@|adelaidadiaz-roa'
-          if grep -rnE "$PAT" . --exclude-dir=.git --exclude-dir=.github; then
+          if grep -rnE "$SCRUB_PAT" . --exclude-dir=.git --exclude-dir=.github; then
             echo "::error::personal data in a public repo"; exit 1
           fi
           echo "scrub clean"
@@ -79,8 +107,7 @@ jobs:
       - name: Secret scan
         run: |
           set -uo pipefail
-          KEYS='AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]{36}|github_pat_[A-Za-z0-9_]{22,255}|sk_live_[0-9a-zA-Z]{24,}|sk-ant-[A-Za-z0-9_-]{40,}'
-          if grep -rnE "$KEYS" . --exclude-dir=.git --exclude-dir=.github; then
+          if grep -rnE "$KEYS_PAT" . --exclude-dir=.git --exclude-dir=.github; then
             echo "::error::credential in repo"; exit 1
           fi
           echo "no secrets"
