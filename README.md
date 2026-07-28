@@ -66,6 +66,17 @@ El detalle completo está en [SECURITY.md](SECURITY.md). Vale la pena leerlo ant
 
 ---
 
+## Si ya tienes el correo conectado
+
+Por defecto el correo de seguimiento sale como texto y tú lo copias. Funciona siempre y no depende de nada.
+
+Si además tienes un conector de correo en Claude Code, la skill lo detecta y te ofrece **dejar el borrador directo en tu carpeta de borradores**. Dos que puedes instalar, gratis y abiertos:
+
+- Gmail: [google-workspace-mcp](https://github.com/adelaidasofia/google-workspace-mcp)
+- Outlook: [microsoft-365-mcp](https://github.com/adelaidasofia/microsoft-365-mcp)
+
+**Borrador, nunca envío.** La skill no manda correos aunque se lo pidas. Abrir y enviar es tuyo, siempre.
+
 ## Qué NO hace esto
 
 Vale la pena decirlo claro, porque es la mitad del valor.

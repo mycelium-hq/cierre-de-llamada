@@ -1,6 +1,6 @@
 {
   "name": "cierre-de-llamada",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Convierte la transcripcion de una llamada comercial en el seguimiento completo: resumen para el CRM, estado del negocio, tareas con dueno y fecha, correo de seguimiento redactado, recordatorio del proximo toque, aviso al lider comercial y que funciono / que no.",
   "author": {
     "name": "Mycelium AI",

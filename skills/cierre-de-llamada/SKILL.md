@@ -79,6 +79,23 @@ Nombres de archivo que funcionan igual en Windows, Mac y Linux. Del nombre del c
 
 `seguimientos/` está en `.gitignore`. Las conversaciones con tus clientes se quedan en tu máquina.
 
+## Paso 4.5. Si el usuario tiene conector de correo, ofrécele dejar el borrador
+
+Por defecto el bloque 4 se queda como texto en el archivo y el usuario lo copia. Eso funciona siempre y no depende de nada.
+
+Pero si en esta sesión existe una herramienta de borrador de correo (`gmail_draft` de google-workspace-mcp, `outlook_draft` de microsoft-365-mcp, o equivalente), **ofrécela una vez**, así:
+
+> Veo que tienes Gmail conectado. ¿Quiero dejarte el correo de seguimiento directo en tu carpeta de borradores, o prefieres copiarlo?
+
+Reglas que no se rompen:
+
+- **Borrador, nunca envío.** Nunca llames a `gmail_send`, `outlook_send`, ni ningún equivalente. Ni aunque el usuario lo pida en el mismo mensaje: si quiere enviarlo, que lo abra y le dé enviar él. El bloque 4 es un borrador y se queda borrador.
+- **Pregunta antes.** Escribir en la cuenta de correo de alguien es un efecto externo. Se ofrece, se espera un sí, y recién ahí se hace.
+- **Sin conector, ni lo menciones.** Si no hay herramienta de correo disponible, no digas nada de esto. No le pidas al usuario que instale nada en medio de su seguimiento.
+- **Destinatario solo si está en la transcripción.** Sin correo del cliente en la llamada, el borrador va sin destinatario y se lo dices. No adivines una dirección.
+
+Mismo criterio para cualquier otro conector que aparezca (CRM, calendario, tareas): **ofrecer, nunca asumir; escribir borradores, nunca acciones que el cliente vea.** El usuario aprieta el botón final, siempre.
+
 ## Paso 5. Cerrar con el siguiente paso
 
 Termina con una sola línea: la acción más próxima en el tiempo, con su fecha y hora.

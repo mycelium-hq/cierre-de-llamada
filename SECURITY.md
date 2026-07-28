@@ -20,12 +20,26 @@ Tres destinos, y conviene tenerlos separados en la cabeza.
 
 ## Qué NO hace
 
-- No manda correos. El bloque 4 escribe un borrador y lo deja ahí; enviarlo es tuyo.
+- **No manda correos. Nunca.** El bloque 4 escribe un borrador. Enviarlo es tuyo.
 - No escribe en tu CRM. Genera texto para que lo pegues.
 - No agenda nada en tu calendario. Te dice la fecha y la hora.
-- No lee tu correo, ni tu CRM, ni tus archivos fuera de la carpeta donde lo corras.
+- Por sí solo no lee tu correo, ni tu CRM, ni tus archivos fuera de la carpeta donde lo corras.
 
-Cada acción que toca el mundo real la haces tú. Es deliberado.
+Cada acción que tu cliente puede ver la haces tú. Es deliberado.
+
+## Si conectas otras herramientas
+
+Este repo no trae conectores. Pero Claude Code sí puede tener otros conectores instalados (Gmail, Outlook, Notion, tu CRM), y en ese caso la skill los detecta.
+
+Qué hace con ellos:
+
+- **Ofrece** dejar el correo de seguimiento en tu carpeta de **borradores**, y espera tu sí antes de escribir nada.
+- **Nunca envía**, aunque se lo pidas en el mismo mensaje. Si quieres mandarlo, lo abres y le das enviar.
+- Si no tienes ningún conector, no menciona el tema.
+
+Regla general: la skill escribe borradores, nunca acciones que tu cliente vea. El botón final lo aprietas tú.
+
+Importante para tu equipo de seguridad: **el alcance de la skill es el alcance que tú le diste a Claude Code.** Si conectaste Gmail, la skill puede escribir borradores en Gmail. Ese permiso lo diste tú al instalar ese conector, no este repo. Si no quieres eso, no conectes el correo: la skill funciona igual.
 
 ## Permisos
 
