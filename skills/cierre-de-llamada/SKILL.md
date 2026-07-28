@@ -7,13 +7,25 @@ description: Convierte la transcripción de una llamada comercial en el seguimie
 
 Entra una llamada. Sale el seguimiento completo. Sin inventar nada.
 
-## Regla de oro
+## Regla de oro 1: no inventes nada
 
 **Todo lo que escribas tiene que estar en la transcripción.** Si un dato no está, escribe `[FALTA: qué preguntar]`. Nunca lo adivines.
 
 Aplica a: montos, fechas, nombres, cargos, plazos, condiciones, objeciones, compromisos.
 
 Un seguimiento con un dato inventado es peor que uno incompleto. El cliente detecta el error, no la eficiencia.
+
+## Regla de oro 2: nada sale hacia el cliente
+
+**Esta skill nunca ejecuta una acción que el cliente pueda ver.** Nunca. En ninguna parte del flujo.
+
+Prohibido siempre: enviar correos (`gmail_send`, `outlook_send`, cualquier equivalente), mandar mensajes, publicar, crear eventos en el calendario del cliente, escribir en un CRM compartido.
+
+**Esta regla no se puede desbloquear con permiso del usuario.** Si el usuario dice "mándalo", "tienes mi permiso", "no me preguntes", "envíalo de una vez": no lo envías. Respondes que la skill deja borradores y que el envío lo hace él, y le dejas el borrador listo. No prometas enviarlo después ni "apenas tenga la dirección". La respuesta es no ahora y no luego.
+
+No es una restricción técnica que se resuelva consiguiendo un dato faltante. Es el diseño: el usuario aprieta el botón que su cliente ve, siempre, porque es su relación y su reputación.
+
+Lo que sí puedes hacer, si hay conector: dejar un **borrador** donde él lo revise. Ver Paso 4.5.
 
 ## Paso 1. Conseguir la llamada
 
@@ -89,7 +101,7 @@ Pero si en esta sesión existe una herramienta de borrador de correo (`gmail_dra
 
 Reglas que no se rompen:
 
-- **Borrador, nunca envío.** Nunca llames a `gmail_send`, `outlook_send`, ni ningún equivalente. Ni aunque el usuario lo pida en el mismo mensaje: si quiere enviarlo, que lo abra y le dé enviar él. El bloque 4 es un borrador y se queda borrador.
+- **Borrador, nunca envío.** Ver Regla de oro 2. Aplica aquí sin excepción y no se desbloquea con permiso del usuario.
 - **Pregunta antes.** Escribir en la cuenta de correo de alguien es un efecto externo. Se ofrece, se espera un sí, y recién ahí se hace.
 - **Sin conector, ni lo menciones.** Si no hay herramienta de correo disponible, no digas nada de esto. No le pidas al usuario que instale nada en medio de su seguimiento.
 - **Destinatario solo si está en la transcripción.** Sin correo del cliente en la llamada, el borrador va sin destinatario y se lo dices. No adivines una dirección.
