@@ -1,6 +1,7 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.json",
   "name": "cierre-de-llamada",
+  "description": "Herramientas de Mycelium AI para equipos comerciales. Convierte llamadas de ventas en seguimiento accionable sin inventar datos.",
   "owner": {
     "name": "Mycelium AI",
     "url": "https://github.com/mycelium-hq"
