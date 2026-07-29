@@ -27,6 +27,18 @@ No es una restricción técnica que se resuelva consiguiendo un dato faltante. E
 
 Lo que sí puedes hacer, si hay conector: dejar un **borrador** donde él lo revise. Ver Paso 4.5.
 
+### Quién lo ve decide qué puedes hacer
+
+Toda acción con conector cae en exactamente un nivel. Decide el nivel primero, después actúa.
+
+| Nivel | Quién ve el resultado | Qué puedes hacer |
+|---|---|---|
+| **Lo ve el cliente** | el cliente | **Nunca.** Mandar correo, escribirle, invitarlo a un evento, cualquier cosa que llegue a su bandeja. No se desbloquea. |
+| **Lo ve un compañero** | alguien de su equipo | Redacta, muéstralo, pide un sí explícito, y recién ahí manda por la compuerta de confirmación del conector. Nunca automático. |
+| **Solo lo ve el usuario** | nadie más | Ofrece, espera el sí, hazlo. Su propio calendario, su propia carpeta de borradores, sus propias notas y registros. |
+
+Si no sabes en qué nivel cae una acción, trátala como el nivel de arriba. Un evento de calendario con el cliente invitado lo ve el cliente, por más que el usuario haya dicho "recordatorio".
+
 ## Paso 1. Conseguir la llamada
 
 En orden, lo primero que exista:
@@ -106,7 +118,51 @@ Reglas que no se rompen:
 - **Sin conector, ni lo menciones.** Si no hay herramienta de correo disponible, no digas nada de esto. No le pidas al usuario que instale nada en medio de su seguimiento.
 - **Destinatario solo si está en la transcripción.** Sin correo del cliente en la llamada, el borrador va sin destinatario y se lo dices. No adivines una dirección.
 
-Mismo criterio para cualquier otro conector que aparezca (CRM, calendario, tareas): **ofrecer, nunca asumir; escribir borradores, nunca acciones que el cliente vea.** El usuario aprieta el botón final, siempre.
+Cualquier conector que no tenga paso propio abajo: ubícalo en la tabla de niveles y sigue esa fila.
+
+## Paso 4.6. Si hay conector de calendario, ofrece agendar el recordatorio
+
+El bloque 5 ya calculó el próximo toque. Si hay una herramienta de crear eventos (`create_event` de google-workspace-mcp, `mscal_create_event` de microsoft-365-mcp, o equivalente), ofrécelo:
+
+> ¿Te agendo el seguimiento el viernes a las 10, con el contexto adentro?
+
+**Nunca pongas invitados. Ni el cliente ni nadie.** Esta es la trampa concreta: estas APIs mandan `send_updates` en `all` por defecto, así que un solo invitado convierte un recordatorio privado en un correo que aterriza en la bandeja de tu cliente. El recordatorio es solo para el usuario.
+
+El evento:
+
+- **Título**: `Seguimiento: <cliente>`.
+- **Hora**: exactamente la del bloque 5. 30 minutos si no se habló de duración.
+- **Invitados**: ninguno. Siempre.
+- **Descripción**: aquí está el valor. Mete lo que va a necesitar cuando suene y ya se le olvidó la llamada:
+  - qué se acordó, en una línea
+  - la objeción principal del cliente, citada
+  - las tareas del bloque 3 que siguen siendo suyas
+  - el correo de seguimiento del bloque 4, completo
+
+Así el recordatorio no dice "llamar a Ana": trae todo para hacer la llamada, con el mensaje listo para enviar.
+
+Pregunta antes. Sin conector de calendario, ni lo menciones.
+
+## Paso 4.7. Si hay conector de CRM o notas, ofrece archivar el resumen
+
+El bloque 1 está escrito para pegarse en un CRM. Si hay un conector que pueda escribir registros o páginas (Notion, Airtable, HubSpot, lo que tenga este usuario), ofrécelo en vez de hacerlo copiar:
+
+> Te puedo dejar el resumen en la ficha del cliente. ¿Lo hago?
+
+- **Nivel: solo lo ve el usuario.** Ofrece, espera el sí, escribe.
+- **Agrega una nota, nunca edites el negocio.** Escribe el resumen como nota o página nueva. No toques etapa, monto, fecha de cierre, dueño ni probabilidad: son números que un gerente reporta, y uno equivocado es peor que uno faltante.
+- **Sin ficha que coincida, no la crees.** Pregunta. Un cliente duplicado lo limpia alguien durante semanas.
+- **Los `[FALTA]` viajan.** No los borres calladamente al pasar al CRM. Un campo vacío es honesto; uno inventado no.
+
+## Paso 4.8. Si el líder comercial debe enterarse, redacta el aviso
+
+El bloque 6 está escrito para un jefe. Si hay conector de mensajería (Slack, Teams, correo), ofrécelo:
+
+> ¿Le mando el resumen a tu líder comercial por Slack? Te muestro el mensaje primero.
+
+- **Nivel: lo ve un compañero.** Redacta, **muestra el texto completo**, espera un sí explícito, y manda por la compuerta de confirmación del conector. Nunca automático, y un "sí manda el correo al cliente" jamás cubre esto ni al revés.
+- **El destinatario tiene que ser conocido.** Sin líder nombrado en la transcripción y sin uno configurado, pregunta. Nunca adivines un canal ni una persona.
+- **Sus palabras, no una actuación.** El aviso cuenta lo que pasó, incluido lo que no funcionó. No suavices el bloque 7 camino al jefe: ese bloque existe justamente para que el equipo aprenda.
 
 ## Paso 5. Cerrar con el siguiente paso
 
