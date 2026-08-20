@@ -14,11 +14,12 @@ permissions:
 
 # Patterns live here ONCE so the self-test below and the real checks provably
 # use the SAME string. A control that tests a copy of the pattern proves nothing.
-# `[a]delaida@` is a one-character class: a no-op for the regex engine, but it
-# keeps this gate's own pattern from reading as a leak to the fleet-wide scrub
-# scan. The pattern it matches is unchanged.
+#
+# Personal-data scanning is NOT here (MYC-3943): a plaintext name roster in a
+# public workflow IS the disclosure it exists to prevent. That scope is owned by
+# .github/workflows/personal-pii-scrub.yml, which reads the private vocabulary
+# from the PII_PRIVATE_PATTERNS repo secret and fails closed when it is absent.
 env:
-  SCRUB_PAT: '\bAdelaida\b|\bDiaz-Roa\b|\bOnde\b|\bSergio\b|\bSneider\b|\bPanorama\b|\bNelly\b|\bColombia\b|\bBogot[aá]\b|\bAccenture\b|[a]delaida@|adelaidadiaz-roa'
   KEYS_PAT: 'AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9_]{36}|github_pat_[A-Za-z0-9_]{22,255}|sk_live_[0-9a-zA-Z]{24,}|sk-ant-[A-Za-z0-9_-]{40,}'
 
 jobs:
@@ -70,10 +71,6 @@ jobs:
               fail=1
             fi
           }
-          # Built at runtime for the same reason as the key probe below: a
-          # complete personal-name literal here would make this gate trip the
-          # fleet-wide scrub scan on its own control fixture.
-          probe "personal-data scrub" "$SCRUB_PAT" "contacto: A$(printf 'delaida')"
           # Built at runtime so no credential-shaped literal is ever committed.
           probe "secret scan" "$KEYS_PAT" "AKIA$(printf 'ABCDEFGHIJKLMNOP')"
           probe "voice firewall" '—' "texto con em dash — aqui"
@@ -101,14 +98,6 @@ jobs:
           grep -q '^name: cierre-de-llamada$' skills/cierre-de-llamada/SKILL.md
           grep -q '^description:' skills/cierre-de-llamada/SKILL.md
           echo "skill frontmatter OK"
-
-      - name: Personal-data scrub (public repo, non-negotiable)
-        run: |
-          set -uo pipefail
-          if grep -rnE "$SCRUB_PAT" . --exclude-dir=.git --exclude-dir=.github; then
-            echo "::error::personal data in a public repo"; exit 1
-          fi
-          echo "scrub clean"
 
       - name: Secret scan
         run: |
